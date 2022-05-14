@@ -19,6 +19,7 @@ from .locale import LocalePage
 from .restart import RestartPage
 from .software import SoftwarePage
 from .user import UserPage
+from .welcome import WelcomePage
 from .widgets import PageWrapper
 
 from .confirm_quit_popup import ConfirmQuitPopup
@@ -70,6 +71,7 @@ class OsInstallerWindow(Adw.ApplicationWindow):
         self._initialize_page(self.available_pages[0])
 
     def _determine_available_pages(self):
+        offer_welcome_page = True #global_state.get_config('show_welcome_page')
         offer_internet_connection = global_state.get_config('internet_connection_required')
         offer_disk_encryption = global_state.get_config('offer_disk_encryption')
         additional_software_config = global_state.get_config('additional_software')
@@ -78,6 +80,7 @@ class OsInstallerWindow(Adw.ApplicationWindow):
         available_pages = [
             # pre-installation section
             LanguagePage,
+            WelcomePage if offer_welcome_page else None,
             KeyboardLayoutPage,
             InternetPage if offer_internet_connection else None,
             DiskPage,
